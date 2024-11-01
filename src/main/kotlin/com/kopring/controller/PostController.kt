@@ -32,6 +32,7 @@ class PostController(
         request: HttpServletRequest
     ): PostDTO {
         val token = request.getHeader(jwtUtil.header).removePrefix(jwtUtil.prefix)
+        jwtUtil.getClaims(token) // 토큰 검사용
         return postService.savePost(dto)
     }
 
@@ -59,8 +60,8 @@ class PostController(
         @PathVariable postId: Long,
         @RequestParam pw: String,
         request: HttpServletRequest
-    ) {
+    ):String {
         val token = request.getHeader(jwtUtil.header).removePrefix(jwtUtil.prefix)
-        postService.removePost(postId, pw, token)
+        return postService.removePost(postId, pw, token)
     }
 }
