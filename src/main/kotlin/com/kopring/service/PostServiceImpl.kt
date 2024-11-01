@@ -5,15 +5,15 @@ import com.kopring.domain.dto.PostsDTO
 import com.kopring.domain.entity.Post
 import com.kopring.enums.ErrCode
 import com.kopring.enums.Role
+import com.kopring.exceptions.NotFoundPostException
+import com.kopring.exceptions.NotOwnerException
+import com.kopring.exceptions.UserNotFoundException
 import com.kopring.repository.PostRepository
 import com.kopring.repository.UserRepository
 import com.kopring.util.JwtUtil
-import jdk.jshell.spi.ExecutionControl.UserException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.nio.file.attribute.UserPrincipalNotFoundException
-import kotlin.jvm.optionals.getOrElse
 import kotlin.jvm.optionals.getOrNull
 
 @Service
@@ -40,28 +40,21 @@ class PostServiceImpl(
         token: String,
         ): PostDTO? {
         val userName = jwtUtil.getClaims(token).subject
-        val requester = userRepository.findById(userName).getOrNull() ?: throw UserPrincipalNotFoundException("not found $userName")
-        return postRepository.findById(postId).getOrNull()?.let {
-            if (requester.role != Role.ADMIN && (userName != it.userName || it.pw != dto.pw))
-                return null
+        val requester = userRepository.findById(userName).getOrNull() ?: throw UserNotFoundException()
+        val post = postRepository.findById(postId).getOrNull() ?: throw NotFoundPostException()
+        if (requester.role != Role.ADMIN && userName != post.userName) throw NotOwnerException()
 
-            it.update(dto)
-            return PostDTO(it)
-        }
+        post.update(dto)
+        return PostDTO(post)
     }
 
     @Transactional
     override fun removePost(postId: Long, pw: String, token: String) {
         val userName = jwtUtil.getClaims(token).subject
-        val requester =
-            userRepository.findById(userName).getOrNull() ?: throw UserPrincipalNotFoundException("not found $userName")
-        postRepository.findById(postId).ifPresentOrElse(
-            {
-                if (requester.role != Role.ADMIN && (userName != it.userName || it.pw != pw))
-                    throw IllegalArgumentException(ErrCode.ILLEGAL.msg)
-                postRepository.delete(it)
-            },
-            { throw IllegalArgumentException(ErrCode.ILLEGAL.msg) }
-        )
+        val requester = userRepository.findById(userName)
+            .getOrNull() ?: throw UserNotFoundException()
+        val post = postRepository.findById(postId).getOrNull() ?: throw NotFoundPostException()
+        if (requester.role != Role.ADMIN && userName != post.userName) throw NotOwnerException()
+        postRepository.delete(post)
     }
 }

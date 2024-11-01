@@ -28,7 +28,8 @@ import java.time.LocalDateTime
 @AutoConfigureMockMvc
 @Rollback(false)
 class PostControllerTest(
-    @Autowired val mvc: MockMvc, @Autowired val jwtUtil: JwtUtil
+    @Autowired val mvc: MockMvc,
+    @Autowired val jwtUtil: JwtUtil
 ) {
     private val token =
         "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyTmFtZSIsImlhdCI6MTczMDQyMTk4MH0.G0Qkop_9zyyO7uEQGOfMuTyPbx5_l0R6MamiVcPDkgs"
@@ -107,5 +108,40 @@ class PostControllerTest(
             .andDo { println("\n${it.response.status} ${it.response.contentAsString}\n") }
     }
 
+    @DisplayName("작성자가 아닌 사람이 지울때 test")
+    @Test
+    fun notOwnerTest(){
+        val userDTO = UserDTO(
+            userName = "tester",
+            password = "12345678"
+        )
+        val userJson = ObjectMapper().writeValueAsString(userDTO)
+        var userToken = ""
+
+        mvc.perform(
+            post("/user/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(userJson)
+        ).andExpect(status().isOk)
+            .andDo { userToken = it.response.getHeader(jwtUtil.header)!! }
+        println("token is $userToken")
+        mvc.perform(
+            delete("/post/6")
+                .param("pw", "1234")
+                .header(jwtUtil.header, userToken)
+        ).andExpect(status().isBadRequest)
+            .andDo { println(it.response.contentAsString) }
+    }
+
+    @DisplayName("jwt file test")
+    @Test
+    fun jwtFialTest(){
+        mvc.perform(
+            delete("/post/6")
+                .param("pw", "1234")
+                .header(jwtUtil.header, "Bearer kkk")
+        ).andExpect(status().isBadRequest)
+            .andDo { println(it.response.contentAsString) }
+    }
 
 }

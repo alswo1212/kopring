@@ -32,10 +32,7 @@ class PostController(
         request: HttpServletRequest
     ): PostDTO {
         val token = request.getHeader(jwtUtil.header).removePrefix(jwtUtil.prefix)
-        return when (val code = jwtUtil.valid(token)) {
-            JwtUtil.JwtParseCode.OK -> postService.savePost(dto)
-            else -> throw AuthenticationException(code.msg)
-        }
+        return postService.savePost(dto)
     }
 
     @GetMapping("/{postId}")
@@ -44,11 +41,7 @@ class PostController(
         request: HttpServletRequest
     ): PostDTO? {
         val token = request.getHeader(jwtUtil.header).removePrefix(jwtUtil.prefix)
-        println("token print:$token")
-        return when (val code = jwtUtil.valid(token)) {
-            JwtUtil.JwtParseCode.OK -> postService.getPost(postId)
-            else -> throw AuthenticationException(code.msg)
-        }
+        return postService.getPost(postId)
     }
 
     @PutMapping("/{postId}")
@@ -58,10 +51,7 @@ class PostController(
         request: HttpServletRequest
     ): PostDTO? {
         val token = request.getHeader(jwtUtil.header).removePrefix(jwtUtil.prefix)
-        return when (val code = jwtUtil.valid(token)) {
-            JwtUtil.JwtParseCode.OK -> postService.modifyPost(postId, dto, token)
-            else -> throw AuthenticationException(code.msg)
-        }
+        return postService.modifyPost(postId, dto, token)
     }
 
     @DeleteMapping("/{postId}")
@@ -71,9 +61,6 @@ class PostController(
         request: HttpServletRequest
     ) {
         val token = request.getHeader(jwtUtil.header).removePrefix(jwtUtil.prefix)
-        when (val code = jwtUtil.valid(token)) {
-            JwtUtil.JwtParseCode.OK -> postService.removePost(postId, pw, token)
-            else -> throw AuthenticationException(code.msg)
-        }
+        postService.removePost(postId, pw, token)
     }
 }

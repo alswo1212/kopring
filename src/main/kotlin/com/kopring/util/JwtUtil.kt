@@ -35,34 +35,5 @@ class JwtUtil (
             .compact()
     }
 
-    fun valid(token: String):JwtParseCode{
-        try {
-            jwtParser().parseClaimsJws(token)
-            return JwtParseCode.OK
-        } catch (e: SecurityException) {
-            return JwtParseCode.NON_SECUR
-        } catch (e: MalformedJwtException) {
-            return JwtParseCode.MALFORM
-        } catch (e: ExpiredJwtException) {
-            return JwtParseCode.EXPIRE
-        } catch (e: UnsupportedJwtException) {
-            return JwtParseCode.UNSUPPORT
-        } catch (e: IllegalArgumentException) {
-            return JwtParseCode.ILLEGAL
-        }
-    }
-
     fun getClaims(token: String) = jwtParser().parseClaimsJws(token).body
-
-    enum class JwtParseCode(
-        val msg:String?
-    ){
-        OK(null),
-        NON_SECUR("유효하지 않는 JWT 서명입니다."),
-        MALFORM("유효하지 않는 JWT 서명입니다."),
-        EXPIRE("만료된 JWT 서명입니다."),
-        UNSUPPORT("지원되지 않는 JWT 서명입니다."),
-        ILLEGAL("잘못된 JWT 서명입니다."),
-        UNNON_FAIL("")
-    }
 }

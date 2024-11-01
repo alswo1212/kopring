@@ -19,4 +19,4 @@ INSERT INTO posts (content,title,user_name,pw,create_dt, modify_dt) VALUES ('con
 INSERT INTO posts (content,title,user_name,pw,create_dt, modify_dt) VALUES ('content19','title19','userName', '1234',now(), now());
 INSERT INTO posts (content,title,user_name,pw,create_dt, modify_dt) VALUES ('content20','title20','userName', '1234',now(), now());
 INSERT INTO users (password, user_name) VALUES('12345678', 'tester');
-INSERT INTO users (password, user_name) VALUES('12345678', 'userName');
+INSERT INTO users (password, user_name) VALUES('12345678!', 'userName');
