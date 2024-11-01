@@ -19,8 +19,10 @@ enum class ErrCode (
     NOT_OWNER(HttpStatus.BAD_REQUEST, "작성자만 삭제/수정할 수 있습니다."),
     DUPL_USERNAME(HttpStatus.BAD_REQUEST, "중복된 username 입니다."),
     NOT_FOUND_USER(HttpStatus.BAD_REQUEST, "회원을 찾을 수 없습니다."),
+    UNKNOWN_USER(HttpStatus.BAD_REQUEST, "확인되지 않은 사용자입니다."),
 
-    NOT_FOUND_POST(HttpStatus.BAD_REQUEST, "게시글을 찾을 수 없습니다.")
+    NOT_FOUND_POST(HttpStatus.BAD_REQUEST, "게시글을 찾을 수 없습니다."),
+    NOT_FOUND_COMMENT(HttpStatus.BAD_REQUEST, "댓글을 찾을 수 없습니다.")
     ;
 
     fun toResponse():ResponseEntity<Map<String, String>> = ResponseEntity(mapOf("msg" to msg), status)

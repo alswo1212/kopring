@@ -20,3 +20,11 @@ INSERT INTO posts (content,title,user_name,pw,create_dt, modify_dt) VALUES ('con
 INSERT INTO posts (content,title,user_name,pw,create_dt, modify_dt) VALUES ('content20','title20','userName', '1234',now(), now());
 INSERT INTO users (password, user_name) VALUES('12345678', 'tester');
 INSERT INTO users (password, user_name) VALUES('12345678!', 'userName');
+
+insert into comments(create_dt, modify_dt, post_id, comment, user_name) values (now(), now(), 4, "comment1", "userName");
+insert into comments(create_dt, modify_dt, post_id, comment, user_name) values (now(), now(), 4, "comment2", "userName");
+insert into comments(create_dt, modify_dt, post_id, comment, user_name) values (now(), now(), 4, "comment3", "userName");
+insert into comments(create_dt, modify_dt, post_id, comment, user_name) values (now(), now(), 5, "comment4", "userName");
+insert into comments(create_dt, modify_dt, post_id, comment, user_name) values (now(), now(), 5, "comment5", "userName");
+insert into comments(create_dt, modify_dt, post_id, comment, user_name) values (now(), now(), 5, "comment6", "userName");
+insert into comments(create_dt, modify_dt, post_id, comment, user_name) values (now(), now(), 5, "comment7", "userName");
