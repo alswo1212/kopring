@@ -37,7 +37,11 @@ class PostControllerTest(
     @DisplayName("[GET] /post/list")
     @Test
     fun test() {
-        mvc.perform(get("/post/list")).andExpect(status().isOk)
+        mvc.perform(
+            get("/post/list")
+                .param("page", "1")
+        )
+            .andExpect(status().isOk)
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andDo { println("\n${it.response.status} ${it.response.contentAsString}\n") }
     }

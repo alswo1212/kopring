@@ -19,7 +19,7 @@ class PostServiceTest (
     @Test
     fun getPostsTest(){
         val count = postRepository.count()
-        val posts = postService.getPosts()
+        val posts = postService.getPosts(1)
         println("count $count posts ${posts.size}")
         assertThat(posts.size).isEqualTo(count)
     }
