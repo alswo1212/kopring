@@ -46,7 +46,7 @@ class PostControllerTest(
     @Test
     fun test2() {
         mvc.perform(
-            get("/post/1").header(jwtUtil.header, token)
+            get("/post/4").header(jwtUtil.header, token)
         ).andExpect(status().isOk).andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andDo { println("\n${it.response.status} ${it.response.contentAsString}\n") }
     }
