@@ -26,8 +26,8 @@ class PostServiceTest (
 
     @Test
     fun savePostTest(){
-        val dto = PostDTO(0, "test title", "test content", "test user name", "1212", null)
-        val savePost = postService.savePost(dto)
+        val dto = PostDTO(0, "test title", "test content", "test user name",  null)
+        val savePost = postService.savePost(dto, token)
         assertThat(savePost).isNotNull()
         assertThat(savePost.postId).isNotEqualTo(dto.postId)
     }
@@ -43,11 +43,11 @@ class PostServiceTest (
         val postId = 3L
         val newTitle = "tttt title"
 
-        val dto1 = PostDTO(postId, newTitle, "ttt content", "uuuuser", "pwpw", null)
+        val dto1 = PostDTO(postId, newTitle, "ttt content", "uuuuser", null)
         val mustNull = postService.modifyPost(postId, dto1, token)
         assertThat(mustNull).isNull()
 
-        val dto2 = PostDTO(postId, newTitle, "ttt content", "uuuuser", "1234", null)
+        val dto2 = PostDTO(postId, newTitle, "ttt content", "uuuuser", null)
         val mustNotNull = postService.modifyPost(postId, dto2, token)
         assertThat(mustNotNull).isNotNull().hasFieldOrPropertyWithValue("title", newTitle)
     }
