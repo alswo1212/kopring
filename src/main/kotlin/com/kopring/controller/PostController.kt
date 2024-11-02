@@ -6,6 +6,7 @@ import com.kopring.service.PostService
 import com.kopring.util.JwtUtil
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.Page
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
-import javax.naming.AuthenticationException
 
 @RequestMapping("/post")
 @RestController
@@ -24,7 +24,9 @@ class PostController(
     @Autowired val jwtUtil: JwtUtil
 ) {
     @GetMapping("/list")
-    fun getPosts(): MutableList<PostsDTO> = postService.getPosts()
+    fun getPosts(
+        @RequestParam page: Int
+    ): Page<PostsDTO> = postService.getPosts(page)
 
     @PostMapping
     fun savePost(
