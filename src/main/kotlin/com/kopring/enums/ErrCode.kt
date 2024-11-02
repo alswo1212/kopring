@@ -14,7 +14,7 @@ enum class ErrCode (
     JWT_EXPIRE(HttpStatus.BAD_REQUEST, "만료된 JWT 서명입니다."),
     JWT_UNSUPPORT(HttpStatus.BAD_REQUEST, "지원되지 않는 JWT 서명입니다."),
     JWT_ILLEGAL(HttpStatus.BAD_REQUEST, "잘못된 JWT 서명입니다."),
-    JWT_UNNON_FAIL(HttpStatus.BAD_REQUEST, ""),
+    JWT_NOT_EXIST(HttpStatus.BAD_REQUEST, "로그인 되어있지 않습니다."),
 
     NOT_OWNER(HttpStatus.BAD_REQUEST, "작성자만 삭제/수정할 수 있습니다."),
     DUPL_USERNAME(HttpStatus.BAD_REQUEST, "중복된 username 입니다."),
