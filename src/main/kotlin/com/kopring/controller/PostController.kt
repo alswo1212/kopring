@@ -23,9 +23,10 @@ class PostController(
     @Autowired val postService: PostService,
     @Autowired val jwtUtil: JwtUtil
 ) {
-    @GetMapping("/list")
+    @GetMapping
     fun getPosts(
-        @RequestParam page: Int
+        @RequestParam(defaultValue = "1")
+        page: Int
     ): Page<PostsDTO> = postService.getPosts(page)
 
     @PostMapping
@@ -35,17 +36,14 @@ class PostController(
     ): PostDTO {
         val token = request.getHeader(jwtUtil.header).removePrefix(jwtUtil.prefix)
         jwtUtil.getClaims(token) // 토큰 검사용
-        return postService.savePost(dto)
+        return postService.savePost(dto, token)
     }
 
     @GetMapping("/{postId}")
     fun getPost(
         @PathVariable postId: Long,
         request: HttpServletRequest
-    ): PostDTO? {
-        val token = request.getHeader(jwtUtil.header).removePrefix(jwtUtil.prefix)
-        return postService.getPost(postId)
-    }
+    ): PostDTO? = postService.getPost(postId)
 
     @PutMapping("/{postId}")
     fun modifyPost(

@@ -19,7 +19,7 @@ class PostRepositoryTest (
     @DisplayName("save test")
     @Test
     fun saveTest(){
-        var post = Post(0, "title", "content", "tester", "1234")
+        var post = Post(0, "title", "content", "tester")
         println("before save === $post")
         post = postRepository.save(post)
         println("after save === $post")
@@ -36,7 +36,7 @@ class PostRepositoryTest (
     @Test
     fun insertTest(){
         val count = postRepository.count()
-        val post = Post(0, "insert Title", "insert content", "1", "1234")
+        val post = Post(0, "insert Title", "insert content", "1")
         postRepository.save(post)
 //        println("before $count after ${postRepository.count()}")
         assertThat(count + 1 == postRepository.count()).isTrue()

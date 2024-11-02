@@ -60,7 +60,7 @@ class PostControllerTest(
     fun saveTest() {
         val mapper = ObjectMapper().registerModule(JavaTimeModule())
         val dto = PostDTO(
-            0, "controller save test title", "controller save test content", "tester", "1234", LocalDateTime.now()
+            0, "controller save test title", "controller save test content", "tester", LocalDateTime.now()
         )
         val json = mapper.writeValueAsString(dto)
         println("mapper result ================= $json)")
@@ -87,7 +87,7 @@ class PostControllerTest(
     @Test
     fun modifyTest() {
         val dto = PostDTO(
-            0, "controller test modify title", "controller test modify content", "tester", "1234", LocalDateTime.now()
+            0, "controller test modify title", "controller test modify content", "tester", LocalDateTime.now()
         )
         val json = ObjectMapper().registerModule(JavaTimeModule()).writeValueAsString(dto)
 

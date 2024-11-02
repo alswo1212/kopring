@@ -12,8 +12,6 @@ import com.kopring.repository.CommentRepository
 import com.kopring.repository.PostRepository
 import com.kopring.repository.UserRepository
 import com.kopring.util.JwtUtil
-import org.hibernate.query.SortDirection
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
@@ -21,7 +19,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import kotlin.jvm.optionals.getOrNull
 
-private val createDtDesc = Sort.by(Sort.Direction.DESC, "createDt")
+private val postIdDesc = Sort.by(Sort.Direction.DESC, "postId")
 @Service
 class PostServiceImpl (
     private val postRepository: PostRepository,
@@ -30,12 +28,16 @@ class PostServiceImpl (
     private val jwtUtil: JwtUtil
 ) : PostService {
     override fun getPosts(page:Int): Page<PostsDTO> {
-        val paging = PageRequest.of(page-1, 10, createDtDesc)
+        val paging = PageRequest.of(page-1, 10, postIdDesc)
         return postRepository.findAll(paging).map { PostsDTO(it) }
     }
 
     @Transactional
-    override fun savePost(dto: PostDTO): PostDTO = PostDTO(postRepository.save(Post.of(dto)))
+    override fun savePost(dto: PostDTO, token: String): PostDTO {
+        val userName = jwtUtil.getClaims(token).subject
+        val requester = userRepository.findById(userName).getOrNull() ?: throw UserNotFoundException()
+        return PostDTO(postRepository.save(Post.of(dto, requester.userName)))
+    }
 
     override fun getPost(postId: Long): PostDTO? {
         val post = postRepository.findById(postId).getOrNull() ?: throw NotFoundPostException()

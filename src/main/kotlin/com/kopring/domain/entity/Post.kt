@@ -26,7 +26,6 @@ class Post(
     @CreatedBy
     @Column(nullable = false)
     val userName: String,
-    val pw:String,
 ) : AuditingFields() {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "postId")
     lateinit var comments: MutableList<Comment>
@@ -36,10 +35,9 @@ class Post(
             title: String,
             content: String,
             userName: String,
-            pw: String
-        ): Post = Post(postId, title, content, userName, pw)
+        ): Post = Post(postId, title, content, userName)
 
-        fun of(dto: PostDTO) = of(dto.postId, dto.title, dto.content, dto.userName, dto.pw)
+        fun of(dto: PostDTO, userName: String) = of(dto.postId, dto.title, dto.content, userName)
     }
 
     fun update(dto:PostDTO){
