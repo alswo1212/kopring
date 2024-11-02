@@ -1,5 +1,6 @@
 package com.kopring.exceptions
 
-open class PostException:RuntimeException()
+sealed class PostException:RuntimeException()
 
 class NotFoundPostException:PostException()
+class NotFoundCommentException:PostException()

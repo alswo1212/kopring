@@ -12,5 +12,6 @@ data class PostDTO (
     val pw:String,
     val createDt: LocalDateTime?
 ):Serializable{
+    val comments: MutableList<CommentDTO> = ArrayList()
     constructor(post: Post): this(post.postId, post.title, post.content, post.userName, post.pw, post.createDt)
 }

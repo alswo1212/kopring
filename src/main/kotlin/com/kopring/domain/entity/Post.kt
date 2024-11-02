@@ -1,6 +1,7 @@
 package com.kopring.domain.entity
 
 import com.kopring.domain.audit.AuditingFields
+import com.kopring.domain.dto.CommentDTO
 import com.kopring.domain.dto.PostDTO
 import jakarta.persistence.*
 import org.springframework.data.annotation.CreatedBy
@@ -27,6 +28,8 @@ class Post(
     val userName: String,
     val pw:String,
 ) : AuditingFields() {
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "postId")
+    lateinit var comments: MutableList<Comment>
     companion object {
         fun of(
             postId: Long?,
