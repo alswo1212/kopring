@@ -21,7 +21,7 @@ class CommentController (
 ){
     @PostMapping
     fun saveComment(@RequestBody dto:CommentDTO, request: HttpServletRequest):CommentDTO {
-        val token = request.getHeader(jwtUtil.header).removePrefix(jwtUtil.prefix)
+        val token = jwtUtil.getToken(request)
         return commentService.save(dto, token)
     }
 
@@ -31,7 +31,7 @@ class CommentController (
         @RequestBody dto: CommentDTO,
         request: HttpServletRequest
     ):CommentDTO{
-        val token = request.getHeader(jwtUtil.header).removePrefix(jwtUtil.prefix)
+        val token = jwtUtil.getToken(request)
         return commentService.modify(id, dto, token)
     }
 
@@ -40,7 +40,7 @@ class CommentController (
         @PathVariable id:Long,
         request: HttpServletRequest
     ):String{
-        val token = request.getHeader(jwtUtil.header).removePrefix(jwtUtil.prefix)
+        val token = jwtUtil.getToken(request)
         return commentService.remove(id, token)
     }
 

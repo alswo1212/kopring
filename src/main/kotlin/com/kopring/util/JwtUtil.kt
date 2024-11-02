@@ -8,10 +8,12 @@ import io.jsonwebtoken.MalformedJwtException
 import io.jsonwebtoken.SignatureAlgorithm
 import io.jsonwebtoken.UnsupportedJwtException
 import io.jsonwebtoken.security.Keys
+import jakarta.servlet.http.HttpServletRequest
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Component
 import java.util.Date
+import javax.naming.AuthenticationException
 
 @Component
 class JwtUtil (
@@ -36,4 +38,6 @@ class JwtUtil (
     }
 
     fun getClaims(token: String) = jwtParser().parseClaimsJws(token).body
+
+    fun getToken(request: HttpServletRequest):String = request.getHeader(header)?.removePrefix(prefix) ?: throw AuthenticationException()
 }
