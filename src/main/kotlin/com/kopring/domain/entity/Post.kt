@@ -9,6 +9,7 @@ import org.springframework.data.annotation.CreatedBy
     name = "POSTS",
     indexes = [
         Index(name = "idx_title", columnList = "title"),
+        Index(name = "idx_user_name", columnList = "user_name"),
         Index(name = "idx_create_dt", columnList = "create_dt"),
     ]
 )

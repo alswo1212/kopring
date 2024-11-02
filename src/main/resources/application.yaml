@@ -24,3 +24,7 @@ spring:
   data.rest:
     base-path: /api
     detection-strategy: annotated
+jwt:
+  secret-key : 7ZWt7ZW0OTntmZTsnbTtjIXtlZzqta3snYTrhIjrqLjshLjqs4TroZzrgpjslYTqsIDsnpDtm4zrpa3tlZzqsJzrsJzsnpDrpbzrp4zrk6TslrTqsIDsnpA=
+#  access-token-expire-time : 300
+#  refresh-token-expire-time : 7200
